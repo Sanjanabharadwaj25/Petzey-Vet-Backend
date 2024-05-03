@@ -286,6 +286,7 @@ namespace PetzyVet.API.Controllers
                 foreach (var doctorId in doctorIds)
                 {
                     var doctor = vetRepository.GetVetById(doctorId);
+                    string photoUrl = $"https://petzyvetapi20240502220748.azurewebsites.net/Content/uploads/{doctor.Photo}";
 
                     if (doctor != null)
                     {
@@ -295,7 +296,7 @@ namespace PetzyVet.API.Controllers
                             NPINumber= doctor.NPINumber,
                             Name = doctor.FName + " " + doctor.LName,
                             Specialization = doctor.Speciality,
-                            Photo = doctor.Photo
+                            Photo = photoUrl
                         });
                     }
                 }

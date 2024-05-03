@@ -58,8 +58,19 @@ namespace PetzyVet.API.Controllers
                 var postedFile = httpRequest.Files[0];
                 var fileName = Path.GetFileName(postedFile.FileName);
 
+              
+
                 // Save the file
                 var filePath = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/uploads"), fileName); // Ensure 'Content/uploads' is accessible
+
+                var path = HttpContext.Current.Server.MapPath("~/Content/uploads");
+                
+                 
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
 
                 postedFile.SaveAs(filePath);
                 //filePath = $"https://localhost:44304/App_Data/{fileName}";

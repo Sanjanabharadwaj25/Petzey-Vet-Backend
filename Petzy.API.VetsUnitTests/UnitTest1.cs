@@ -932,6 +932,61 @@ namespace PetzyVet.API.Tests.Controllers
             Assert.IsInstanceOfType(actionResult, typeof(InternalServerErrorResult));
         }
 
+        [TestMethod]
+        public void CheckNpiNumber_ValidNpi_ReturnsOk()
+        {
+            // Arrange
+            string validNpi = "9287402030";
+            var mockVetRepository = new Mock<IVetRepository>();
+            mockVetRepository.Setup(repo => repo.CheckNpiNumber(validNpi)).Returns(true);
+            var controller = new VetsController();
+            controller.vetRepository = mockVetRepository.Object;
+
+            // Act
+            IHttpActionResult actionResult = controller.CheckNpiNumber(validNpi);
+
+            // Assert
+            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<bool>));
+            var contentResult = actionResult as OkNegotiatedContentResult<bool>;
+            Assert.IsTrue(contentResult.Content);
+        }
+
+        [TestMethod]
+        public void CheckNpiNumber_InvalidNpi_ReturnsBadRequest()
+        {
+            // Arrange
+            string invalidNpi = "as382389r";
+            var mockVetRepository = new Mock<IVetRepository>();
+            mockVetRepository.Setup(repo => repo.CheckNpiNumber(invalidNpi)).Returns(false);
+            var controller = new VetsController();
+            controller.vetRepository = mockVetRepository.Object;
+
+            // Act
+            IHttpActionResult actionResult = controller.CheckNpiNumber(invalidNpi);
+
+            // Assert
+            Assert.IsInstanceOfType(actionResult, typeof(BadRequestErrorMessageResult));
+            var contentResult = actionResult as BadRequestErrorMessageResult;
+            Assert.AreEqual("Receptionist hasn't added you yet", contentResult.Message);
+        }
+
+        [TestMethod]
+        public void CheckNpiNumber_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            string npi = "123425";
+            var mockVetRepository = new Mock<IVetRepository>();
+            mockVetRepository.Setup(repo => repo.CheckNpiNumber(npi)).Throws(new Exception("Simulated exception"));
+            var controller = new VetsController();
+            controller.vetRepository = mockVetRepository.Object;
+
+            // Act
+            IHttpActionResult actionResult = controller.CheckNpiNumber(npi);
+
+            // Assert
+            Assert.IsInstanceOfType(actionResult, typeof(InternalServerErrorResult));
+        }
+
 
     }
 }

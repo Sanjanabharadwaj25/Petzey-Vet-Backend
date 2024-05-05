@@ -185,7 +185,7 @@ namespace PetzyVet.API.Controllers
                 if (vet != null)
                 {
                     vetRepository.AddVet(vet);
-                    return Ok();
+                    return Ok(vet);
                 }
                 else
                 {

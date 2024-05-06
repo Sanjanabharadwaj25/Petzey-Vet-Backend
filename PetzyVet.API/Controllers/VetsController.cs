@@ -106,7 +106,7 @@ namespace PetzyVet.API.Controllers
             VetCardDTO vetCardDTO;
             foreach (Vet v in vets)
             {
-                string photoUrl = $"https://petzyvetapi20240502220748.azurewebsites.net/Content/uploads/{v.Photo}"; // Hardcoding for example
+                string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{v.Photo}"; // Hardcoding for example
                 vetCardDTO = new VetCardDTO
                 {
                     VetId = v.VetId,
@@ -155,7 +155,7 @@ namespace PetzyVet.API.Controllers
                 {
                     return NotFound();
                 }
-                string photoUrl = $"https://petzyvetapi20240502220748.azurewebsites.net/Content/uploads/{vet.Photo}"; // Hardcoding for example
+                string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{vet.Photo}"; // Hardcoding for example
 
                 return Ok(new VetProfileDTO
                 {
@@ -286,7 +286,7 @@ namespace PetzyVet.API.Controllers
                 foreach (var doctorId in doctorIds)
                 {
                     var doctor = vetRepository.GetVetById(doctorId);
-                    string photoUrl = $"https://petzyvetapi20240502220748.azurewebsites.net/Content/uploads/{doctor.Photo}";
+                    string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{doctor.Photo}";
 
                     if (doctor != null)
                     {
@@ -379,7 +379,7 @@ namespace PetzyVet.API.Controllers
                 List<VetCardDTO> topVets = new List<VetCardDTO>();
                 foreach (var vet in allVets)
                 {
-                    string photoUrl = $"https://petzyvetapi20240502220748.azurewebsites.net/Content/uploads/{vet.Photo}"; // Hardcoding for example
+                    string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{vet.Photo}"; // Hardcoding for example
 
                     VetCardDTO vetCardDTO = new VetCardDTO()
                     {

@@ -16,6 +16,8 @@ using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System.Diagnostics;
+using System.Security.Policy;
 
 namespace PetzyVet.API.Controllers
 {
@@ -24,9 +26,10 @@ namespace PetzyVet.API.Controllers
     public class VetsController : ApiController
     {
         public IVetRepository vetRepository = new VetRepository(new VetDbContext());
+        private static int counter = 0;
+
         public VetsController()
         {
-            
         }
 
         private void LogError(string methodName, int? id = null, Exception ex = null)
@@ -58,22 +61,23 @@ namespace PetzyVet.API.Controllers
                 var postedFile = httpRequest.Files[0];
                 var fileName = Path.GetFileName(postedFile.FileName);
 
-              
+
 
                 // Save the file
-                var filePath = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/uploads"), fileName); // Ensure 'Content/uploads' is accessible
+                //var filePath = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/uploads"), fileName); // Ensure 'Content/uploads' is accessible
 
-                var path = HttpContext.Current.Server.MapPath("~/Content/uploads");
-                
-                 
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
+                //var path = HttpContext.Current.Server.MapPath("~/Content/uploads");
 
 
+                //if (!Directory.Exists(path))
+                //{
+                //    Directory.CreateDirectory(path);
+                //}
+                //$"https://localhost:44304/App_Data/{fileName}";
+
+                var filePath = HttpContext.Current.Server.MapPath("~/Images/" + fileName);
                 postedFile.SaveAs(filePath);
-                //filePath = $"https://localhost:44304/App_Data/{fileName}";
+
 
                 vetRepository.updatePhoto(vetId, fileName);
                 var responseObject = new
@@ -106,7 +110,7 @@ namespace PetzyVet.API.Controllers
             VetCardDTO vetCardDTO;
             foreach (Vet v in vets)
             {
-                string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{v.Photo}"; // Hardcoding for example
+                string photoUrl = $"https://localhost:44304/Images/{ v.Photo}"; 
                 vetCardDTO = new VetCardDTO
                 {
                     VetId = v.VetId,
@@ -115,7 +119,9 @@ namespace PetzyVet.API.Controllers
                     PhoneNumber = v.Phone,
                     Speciality = v.Speciality,
                     Photo = photoUrl,
-
+                    City=v.Address.City,
+                    Rating=v.Rating,
+                    Counter=v.Counter,
                 };
                 vetCards.Add(vetCardDTO);
             }
@@ -155,19 +161,56 @@ namespace PetzyVet.API.Controllers
                 {
                     return NotFound();
                 }
-                string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{vet.Photo}"; // Hardcoding for example
-
-                return Ok(new VetProfileDTO
+                string photoUrl = $"https://localhost:44304/Images/{ vet.Photo}"; 
+                if(counter == 0)
                 {
-                    VetId = vet.VetId,
-                    NPINumber = vet.NPINumber,
-                    FName = vet.FName,
-                    LName = vet.LName,
-                    Speciality = vet.Speciality,
-                    Email = vet.Email,
-                    Phone = vet.Phone,
-                    Photo = photoUrl
-                });
+                    return Ok(new VetProfileDTO
+                    {
+                        VetId = vet.VetId,
+                        NPINumber = vet.NPINumber,
+                        FName = vet.FName,
+                        LName = vet.LName,
+                        Speciality = vet.Speciality,
+                        Email = vet.Email,
+                        Phone = vet.Phone,
+                        Photo = photoUrl
+                    });
+                }
+
+                else
+                {
+                    string url = vet.Photo;
+                    int lastIndexOfSlash = url.LastIndexOf('/');
+                    if (lastIndexOfSlash != -1)
+                    {
+                        url = url.Substring(lastIndexOfSlash + 1);
+                    }
+                    counter = 0;
+                    Vet card = new Vet
+                    {
+                        VetId = vet.VetId,
+                        NPINumber = vet.NPINumber,
+                        FName = vet.FName,
+                        LName = vet.LName,
+                        Speciality = vet.Speciality,
+                        Email = vet.Email,
+                        Phone = vet.Phone,
+                        Photo = url,
+                    };
+                    vetRepository.UpdateVet(card);
+                    return Ok(new VetProfileDTO
+                    {
+                        VetId = vet.VetId,
+                        NPINumber = vet.NPINumber,
+                        FName = vet.FName,
+                        LName = vet.LName,
+                        Speciality = vet.Speciality,
+                        Email = vet.Email,
+                        Phone = vet.Phone,
+                        Photo = vet.Photo
+                    });
+
+                }
             }
             catch (Exception ex)
             {
@@ -212,7 +255,7 @@ namespace PetzyVet.API.Controllers
                 {
                     return NotFound();
                 }
-
+                
                 delta.Patch(existingVet); // Apply changes to the existingVet object
 
 /*                // Validate the model after applying the changes
@@ -220,8 +263,8 @@ namespace PetzyVet.API.Controllers
                 {
                     return BadRequest(ModelState);
                 }*/
-
                 vetRepository.UpdateVet(existingVet);
+                counter = 1;
                 return Ok();
             }
             catch (Exception ex)
@@ -286,7 +329,7 @@ namespace PetzyVet.API.Controllers
                 foreach (var doctorId in doctorIds)
                 {
                     var doctor = vetRepository.GetVetById(doctorId);
-                    string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{doctor.Photo}";
+                    string photoUrl = $"https://localhost:44304/Images/{ doctor.Photo}";
 
                     if (doctor != null)
                     {
@@ -379,7 +422,7 @@ namespace PetzyVet.API.Controllers
                 List<VetCardDTO> topVets = new List<VetCardDTO>();
                 foreach (var vet in allVets)
                 {
-                    string photoUrl = $"https://petzyvetapi20240505160604.azurewebsites.net/Content/uploads/{vet.Photo}"; // Hardcoding for example
+                    string photoUrl = $"https://localhost:44304/Images/{ vet.Photo}"; 
 
                     VetCardDTO vetCardDTO = new VetCardDTO()
                     {
@@ -388,7 +431,8 @@ namespace PetzyVet.API.Controllers
                         NPINumber = vet.NPINumber,
                         PhoneNumber = vet.Phone,
                         Speciality = vet.Speciality,
-                        Photo = photoUrl
+                        Photo = photoUrl,
+                        City=vet.Address.City,
                     };
                     topVets.Add(vetCardDTO);
                 }

@@ -10,7 +10,7 @@ namespace PetzyVet.Data
 {
     public class VetDbContext:DbContext
     {
-        public VetDbContext():base("DefaultConnection")
+        public VetDbContext():base("defaultConnection")
         {
             
         }

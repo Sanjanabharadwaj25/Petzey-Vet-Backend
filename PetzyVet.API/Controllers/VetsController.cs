@@ -120,7 +120,8 @@ namespace PetzyVet.API.Controllers
                     Speciality = v.Speciality,
                     Photo = photoUrl,
                     City=v.Address.City,
-
+                    Rating=v.Rating,
+                    Counter=v.Counter,
                 };
                 vetCards.Add(vetCardDTO);
             }

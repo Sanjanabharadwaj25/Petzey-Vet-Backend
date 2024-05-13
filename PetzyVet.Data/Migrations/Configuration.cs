@@ -53,8 +53,25 @@
         Street = "202 Maple St",
         ZipCode = "19101",
         State = "PA"
+    },
+    new Address
+    {
+        City = "Bengaluru",
+        Street = "202 Maple Street",
+        ZipCode = "12301",
+        State = "Karnataka"
+    },
+    new Address
+    {
+        City = "Bengaluru",
+        Street = "202 Maple Street",
+        ZipCode = "12001",
+        State = "Karnataka"
     }
 };
+
+
+
             var moreVets = new List<Vet>
 {
     new Vet
@@ -111,7 +128,7 @@
         //AddressId = 5, // You need to provide a valid AddressId here
         Address=addresses[2]
     },
-new Vet
+    new Vet
     {
         LName = "Martinez",
         FName = "David",
@@ -146,7 +163,44 @@ new Vet
         Rating = 4.3,
         //AddressId = 7 // You need to provide a valid AddressId here
         Address=addresses[4]
+    },
+    new Vet
+    {
+        LName = "Soujanya",
+        FName = "S",
+        NPINumber = "134487695",
+        Username = "SoujanyaS",
+        Phone = "888-888-8888",
+        Email = "soujanya6620@gmail.com",
+        Speciality = "Dermatology",
+        ShortBio = "Specializing in diagnosing and treating skin conditions in pets.",
+        Status = true,
+        Photo = "jessica_anderson.jpg",
+        Gender = "Female",
+        DOB = new DateTime(1973, 9, 30),
+        Rating = 4.3,
+        //AddressId = 7 // You need to provide a valid AddressId here
+        Address=addresses[5]
+    },
+    new Vet
+    {
+        LName = "Sanjana",
+        FName = "Bharadwaj",
+        NPINumber = "125587695",
+        Username = "Sanjana",
+        Phone = "888-888-8888",
+        Email = "sanjana.bharadwaj01@gmail.com",
+        Speciality = "Dermatology",
+        ShortBio = "Specializing in diagnosing and treating skin conditions in pets.",
+        Status = true,
+        Photo = "jessica_anderson.jpg",
+        Gender = "Female",
+        DOB = new DateTime(1973, 9, 30),
+        Rating = 4.3,
+        //AddressId = 7 // You need to provide a valid AddressId here
+        Address=addresses[6]
     }
+
 };
 
             moreVets.ForEach(v => context.Vets.AddOrUpdate(v));

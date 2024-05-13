@@ -403,10 +403,6 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PetzyVet.Data\PetzyVet.Data.csproj">
-      <Project>{63e72205-7fb2-4ce3-8be6-54679bc8618a}</Project>
-      <Name>PetzyVet.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PetzyVet.Domain\PetzyVet.Domain.csproj">
       <Project>{d0eb5f1f-f304-4d87-b7a4-bd95b924e172}</Project>
       <Name>PetzyVet.Domain</Name>

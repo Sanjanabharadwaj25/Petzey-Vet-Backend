@@ -23,5 +23,6 @@ namespace PetzyVet.Domain.Interfaces
         void updatePhoto(int vetId, string photoPath);
         Vet GetVetByNpiNumber(string npiNumber);
         bool CheckNpiNumber(string Npi);
+        void UpdateVetPhoto(Vet vet);
     }
 }

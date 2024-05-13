@@ -79,7 +79,15 @@ namespace PetzyVet.Data.Repositories
                 db.SaveChanges();
             }
         }
-
+        public void UpdateVetPhoto(Vet vet)
+        {
+            var existingVet = db.Vets.Find(vet.VetId);
+            if (existingVet != null)
+            {
+                db.Entry(existingVet.Photo).CurrentValues.SetValues(vet.Photo);
+                db.SaveChanges();
+            }
+        }
         public List<VetDTO> GetAllVetIdsAndNames()
         {
             var vets = db.Vets
